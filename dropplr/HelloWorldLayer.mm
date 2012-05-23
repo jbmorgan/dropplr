@@ -238,6 +238,7 @@ enum {
 			if(userData && [userData isKindOfClass:[CCSprite class]] &&
 			   [self distanceFrom:userData.position to:location] < 15.5) {
 				[self popBallsFrom:b];
+				return;
 			}
 		}
 	}
@@ -248,14 +249,12 @@ enum {
 	CCSprite *spriteToRemove = (CCSprite *)b->GetUserData();
 	spriteToRemove.visible = NO;
 	
-	
-	
-	//b2ContactEdge * b2Body::GetContactList
 	for(b2ContactEdge *bce = b->GetContactList(); bce; bce = bce->next) {
 		b2Body *otherBody = bce->other;
 		CCSprite *otherSprite = (CCSprite *)otherBody->GetUserData();
 		
-		if(otherBody && otherSprite && otherSprite.visible && otherSprite.tag == spriteToRemove.tag)
+		if(otherBody && otherSprite && otherSprite.visible && otherSprite.tag == spriteToRemove.tag
+		   && [self distanceFrom:spriteToRemove.position to:otherSprite.position] <= 33)
 			[self popBallsFrom:otherBody];
 	}
 	[self removeChild:spriteToRemove cleanup:YES];
