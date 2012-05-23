@@ -1,1 +1,3 @@
-# This is my README
+# dropplr v0.0
+
+A game...?
