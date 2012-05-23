@@ -19,9 +19,13 @@
 	GLESDebugDraw *m_debugDraw;
 }
 
+@property double timeBetweenBallDrops;
+@property double timeSinceLastBallDrop;
+
 // returns a CCScene that contains the HelloWorldLayer as the only child
 +(CCScene *) scene;
 // adds a new sprite at a given coordinate
 -(void) addNewSpriteWithCoords:(CGPoint)p;
-
+-(double)distanceFrom:(CGPoint)a to:(CGPoint)b;
+-(void)popBallsFrom:(b2Body *)b;
 @end

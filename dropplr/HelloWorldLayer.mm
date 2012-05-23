@@ -27,6 +27,8 @@ enum {
 // HelloWorldLayer implementation
 @implementation HelloWorldLayer
 
+@synthesize timeBetweenBallDrops, timeSinceLastBallDrop;
+
 +(CCScene *) scene
 {
 	// 'scene' is an autorelease object.
@@ -101,15 +103,15 @@ enum {
 		groundBody->CreateFixture(&groundBox,0);
 		
 		// top
-		groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO));
+		groundBox.SetAsEdge(b2Vec2(0,(screenSize.height+100)/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,(screenSize.height+100)/PTM_RATIO));
 		groundBody->CreateFixture(&groundBox,0);
 		
 		// left
-		groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(0,0));
+		groundBox.SetAsEdge(b2Vec2(0,(screenSize.height+100)/PTM_RATIO), b2Vec2(0,0));
 		groundBody->CreateFixture(&groundBox,0);
 		
 		// right
-		groundBox.SetAsEdge(b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,0));
+		groundBox.SetAsEdge(b2Vec2(screenSize.width/PTM_RATIO,(screenSize.height+100)/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,0));
 		groundBody->CreateFixture(&groundBox,0);
 		
 		
@@ -118,13 +120,10 @@ enum {
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
 		[self addChild:batch z:0 tag:kTagBatchNode];
 		
-		[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
+		//[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
 		
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
-		[self addChild:label z:0];
-		[label setColor:ccc3(0,0,255)];
-		label.position = ccp( screenSize.width/2, screenSize.height-50);
-		
+		timeSinceLastBallDrop = timeBetweenBallDrops = 0.3;
+				
 		[self schedule: @selector(tick:)];
 	}
 	return self;
@@ -139,7 +138,7 @@ enum {
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	world->DrawDebugData();
+	//world->DrawDebugData();
 	
 	// restore default GL states
 	glEnable(GL_TEXTURE_2D);
@@ -151,14 +150,16 @@ enum {
 -(void) addNewSpriteWithCoords:(CGPoint)p
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
+	//CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
 	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
-	[batch addChild:sprite];
+	NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", nil];
+	int tag = (arc4random() % spriteIDs.count);
+	NSString *spriteID = [spriteIDs objectAtIndex:tag];
+
+	CCSprite *sprite = [CCSprite spriteWithFile:spriteID];
+	sprite.tag = tag;
+	sprite.scale = 0.5f;
+	[self addChild:sprite];
 	
 	sprite.position = ccp( p.x, p.y);
 	
@@ -175,18 +176,27 @@ enum {
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
 	
+	b2CircleShape ballShape;
+	ballShape.m_radius = 0.98f*0.5;
+	
 	// Define the dynamic body fixture.
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
+	fixtureDef.shape = &ballShape;	
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
+	fixtureDef.restitution = 0.1f;
 	body->CreateFixture(&fixtureDef);
 }
 
-
-
 -(void) tick: (ccTime) dt
 {
+	
+	timeSinceLastBallDrop += dt;
+	if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
+		timeSinceLastBallDrop -= timeBetweenBallDrops;
+		[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
+
+	}
 	//It is recommended that a fixed time step is used with Box2D for stability
 	//of the simulation, however, we are using a variable time step here.
 	//You need to make an informed choice, the following URL is useful
@@ -220,8 +230,40 @@ enum {
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
 		
-		[self addNewSpriteWithCoords: location];
+		//[self addNewSpriteWithCoords: location];
+		
+		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
+			CCSprite *userData = (CCSprite *)b->GetUserData();
+			
+			if(userData && [userData isKindOfClass:[CCSprite class]] &&
+			   [self distanceFrom:userData.position to:location] < 15.5) {
+				[self popBallsFrom:b];
+			}
+		}
 	}
+}
+
+-(void)popBallsFrom:(b2Body *)b {
+	
+	CCSprite *spriteToRemove = (CCSprite *)b->GetUserData();
+	spriteToRemove.visible = NO;
+	
+	
+	
+	//b2ContactEdge * b2Body::GetContactList
+	for(b2ContactEdge *bce = b->GetContactList(); bce; bce = bce->next) {
+		b2Body *otherBody = bce->other;
+		CCSprite *otherSprite = (CCSprite *)otherBody->GetUserData();
+		
+		if(otherBody && otherSprite && otherSprite.visible && otherSprite.tag == spriteToRemove.tag)
+			[self popBallsFrom:otherBody];
+	}
+	[self removeChild:spriteToRemove cleanup:YES];
+	world->DestroyBody(b);
+}
+				 
+-(double)distanceFrom:(CGPoint)a to:(CGPoint)b {
+	return sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y) );
 }
 
 - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
