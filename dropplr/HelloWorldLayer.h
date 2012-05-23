@@ -17,6 +17,7 @@
 {
 	b2World* world;
 	GLESDebugDraw *m_debugDraw;
+	CCSpriteBatchNode *sheet;
 }
 
 @property double timeBetweenBallDrops;

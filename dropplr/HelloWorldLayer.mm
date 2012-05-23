@@ -15,6 +15,7 @@
 //Box2D is optimized for objects of 1x1 metre therefore it makes sense
 //to define the ratio so that your most common object type is 1x1 metre.
 #define PTM_RATIO 32
+#define BALL_SCALE 0.6
 
 // enums that will be used as tags
 enum {
@@ -55,7 +56,7 @@ enum {
 		self.isTouchEnabled = YES;
 		
 		// enable accelerometer
-		self.isAccelerometerEnabled = YES;
+		//self.isAccelerometerEnabled = YES;
 		
 		CGSize screenSize = [CCDirector sharedDirector].winSize;
 		CCLOG(@"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
@@ -116,10 +117,14 @@ enum {
 		
 		
 		//Set up sprite
-		
+		/*
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
 		[self addChild:batch z:0 tag:kTagBatchNode];
-		
+		*/
+		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"ballSpriteSheet.plist"];
+		sheet = [CCSpriteBatchNode batchNodeWithFile:@"ballSpriteSheet.png"];
+		[self addChild:sheet];
+
 		//[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
 		
 		timeSinceLastBallDrop = timeBetweenBallDrops = 0.3;
@@ -149,16 +154,16 @@ enum {
 
 -(void) addNewSpriteWithCoords:(CGPoint)p
 {
-	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
+	//CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
 	//CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
 	
 	NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", nil];
 	int tag = (arc4random() % spriteIDs.count);
 	NSString *spriteID = [spriteIDs objectAtIndex:tag];
 
-	CCSprite *sprite = [CCSprite spriteWithFile:spriteID];
+	CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:spriteID];
 	sprite.tag = tag;
-	sprite.scale = 0.5f;
+	sprite.scale = BALL_SCALE;
 	[self addChild:sprite];
 	
 	sprite.position = ccp( p.x, p.y);
@@ -177,7 +182,7 @@ enum {
 	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
 	
 	b2CircleShape ballShape;
-	ballShape.m_radius = 0.98f*0.5;
+	ballShape.m_radius = 0.98f*BALL_SCALE;
 	
 	// Define the dynamic body fixture.
 	b2FixtureDef fixtureDef;
@@ -236,7 +241,7 @@ enum {
 			CCSprite *userData = (CCSprite *)b->GetUserData();
 			
 			if(userData && [userData isKindOfClass:[CCSprite class]] &&
-			   [self distanceFrom:userData.position to:location] < 15.5) {
+			   [self distanceFrom:userData.position to:location] < 32*BALL_SCALE) {
 				[self popBallsFrom:b];
 				return;
 			}
@@ -254,7 +259,7 @@ enum {
 		CCSprite *otherSprite = (CCSprite *)otherBody->GetUserData();
 		
 		if(otherBody && otherSprite && otherSprite.visible && otherSprite.tag == spriteToRemove.tag
-		   && [self distanceFrom:spriteToRemove.position to:otherSprite.position] <= 33)
+		   && [self distanceFrom:spriteToRemove.position to:otherSprite.position] <= 65*BALL_SCALE)
 			[self popBallsFrom:otherBody];
 	}
 	[self removeChild:spriteToRemove cleanup:YES];
@@ -265,6 +270,7 @@ enum {
 	return sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y) );
 }
 
+/*
 - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
 {	
 	static float prevX=0, prevY=0;
@@ -284,6 +290,7 @@ enum {
 	
 	world->SetGravity( gravity );
 }
+ */
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
