@@ -10,6 +10,7 @@
 // Import the interfaces
 #import "HelloWorldLayer.h"
 #import "ScoreKeeper.h"
+#import "Ball.h"
 
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
@@ -137,6 +138,10 @@ enum {
 	return self;
 }
 
++(CGFloat)scale {
+	return BALL_SCALE;
+}
+
 -(void) draw
 {
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
@@ -160,6 +165,7 @@ enum {
 	//CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
 	//CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
 	
+	/*
 	//NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", @"dg.png", @"lg.png", nil];
 	NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", nil];
 	int tag = (arc4random() % spriteIDs.count);
@@ -168,17 +174,19 @@ enum {
 	CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:spriteID];
 	sprite.tag = tag;
 	sprite.scale = BALL_SCALE;
-	[self addChild:sprite];
+	*/
+	Ball *b = [[Ball alloc] init];
+	b.position = ccp(p.x, p.y);
+	[self addChild:b];
 	
-	sprite.position = ccp( p.x, p.y);
-	
+		
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	bodyDef.userData = sprite;
+	bodyDef.userData = b;
 	b2Body *body = world->CreateBody(&bodyDef);
 	
 	// Define another box shape for our dynamic body.
@@ -224,9 +232,9 @@ enum {
 	{
 		if (b->GetUserData() != NULL) {
 			//Synchronize the AtlasSprites position and rotation with the corresponding body
-			CCSprite *myActor = (CCSprite*)b->GetUserData();
-			myActor.position = CGPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO);
-			myActor.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
+			Ball *myBall = (Ball*)b->GetUserData();
+			myBall.position = CGPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO);
+			myBall.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
 		}	
 	}
 }
@@ -242,9 +250,9 @@ enum {
 		//[self addNewSpriteWithCoords: location];
 		
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
-			CCSprite *userData = (CCSprite *)b->GetUserData();
+			Ball *userData = (Ball *)b->GetUserData();
 			
-			if(userData && [userData isKindOfClass:[CCSprite class]] &&
+			if(userData && [userData isKindOfClass:[Ball class]] &&
 			   [self distanceFrom:userData.position to:location] < 32*BALL_SCALE) {
 				[self popBallsFrom:b];
 				if([ScoreKeeper sharedScoreKeeper].currentBallCount > 0)
@@ -257,18 +265,19 @@ enum {
 
 -(void)popBallsFrom:(b2Body *)b {
 	
-	CCSprite *spriteToRemove = (CCSprite *)b->GetUserData();
-	spriteToRemove.visible = NO;
+	Ball *ballToRemove = (Ball *)b->GetUserData();
+	
+	ballToRemove.visible = NO;
 	
 	for(b2ContactEdge *bce = b->GetContactList(); bce; bce = bce->next) {
 		b2Body *otherBody = bce->other;
-		CCSprite *otherSprite = (CCSprite *)otherBody->GetUserData();
+		Ball *otherBall = (Ball *)otherBody->GetUserData();
 		
-		if(otherBody && otherSprite && otherSprite.visible && otherSprite.tag == spriteToRemove.tag
-		   && [self distanceFrom:spriteToRemove.position to:otherSprite.position] <= 65*BALL_SCALE)
+		if(otherBody && otherBall && otherBall.visible && otherBall.type == ballToRemove.type
+		   && [ballToRemove distanceTo:otherBall] <= 65*BALL_SCALE)
 			[self popBallsFrom:otherBody];
 	}
-	[self removeChild:spriteToRemove cleanup:YES];
+	[self removeChild:ballToRemove cleanup:YES];
 	world->DestroyBody(b);
 	[ScoreKeeper sharedScoreKeeper].currentBallCount++;
 }

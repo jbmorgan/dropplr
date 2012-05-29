@@ -8,7 +8,7 @@
 
 #import "ScoreKeeper.h"
 
-#define LABEL_WIDTH 120
+#define LABEL_WIDTH 150
 #define LABEL_HEIGHT 30
 #define LABEL_PADDING 10
 @implementation ScoreKeeper
@@ -29,7 +29,7 @@ static ScoreKeeper *_sharedScoreKeeper = nil;
 -(id)init {
 	if(self = [super init]) {
 		score = 0;
-		scoreLabel = [[CCLabelTTF alloc] initWithString:@"000000000" dimensions:CGSizeMake(LABEL_WIDTH, LABEL_HEIGHT) alignment:UITextAlignmentRight fontName:@"VeraMono.ttf" fontSize:22.0f];
+		scoreLabel = [[CCLabelTTF alloc] initWithString:@"000000000" dimensions:CGSizeMake(LABEL_WIDTH, LABEL_HEIGHT) alignment:UITextAlignmentRight fontName:@"DroidSansMono.ttf" fontSize:22.0f];
 		scoreLabel.position = ccp(320-LABEL_WIDTH/2-LABEL_PADDING,480-LABEL_HEIGHT/2-LABEL_PADDING);
 	}
 	return self;

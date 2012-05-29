@@ -29,4 +29,5 @@
 -(void) addNewSpriteWithCoords:(CGPoint)p;
 -(double)distanceFrom:(CGPoint)a to:(CGPoint)b;
 -(void)popBallsFrom:(b2Body *)b;
++(CGFloat)scale;
 @end
