@@ -1,5 +1,5 @@
 //
-//  HelloWorldLayer.mm
+//  DropplrGameplayLayer.mm
 //  dropplr
 //
 //  Created by JONATHAN B MORGAN on 5/22/12.
@@ -11,6 +11,7 @@
 #import "DropplrGameplayLayer.h"
 #import "ScoreKeeper.h"
 #import "Ball.h"
+#import "GameOverLayer.h"
 
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
@@ -82,10 +83,10 @@ enum {
 		
 		uint32 flags = 0;
 		flags += b2DebugDraw::e_shapeBit;
-//		flags += b2DebugDraw::e_jointBit;
-//		flags += b2DebugDraw::e_aabbBit;
-//		flags += b2DebugDraw::e_pairBit;
-//		flags += b2DebugDraw::e_centerOfMassBit;
+		//		flags += b2DebugDraw::e_jointBit;
+		//		flags += b2DebugDraw::e_aabbBit;
+		//		flags += b2DebugDraw::e_pairBit;
+		//		flags += b2DebugDraw::e_centerOfMassBit;
 		m_debugDraw->SetFlags(flags);		
 		
 		
@@ -120,26 +121,22 @@ enum {
 		
 		//Set up sprite
 		/*
-		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
-		[self addChild:batch z:0 tag:kTagBatchNode];
-		*/
+		 CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
+		 [self addChild:batch z:0 tag:kTagBatchNode];
+		 */
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"ballSpriteSheet.plist"];
 		sheet = [CCSpriteBatchNode batchNodeWithFile:@"ballSpriteSheet.png"];
 		[self addChild:sheet];
 		
 		[self addChild:[ScoreKeeper sharedScoreKeeper].scoreLabel z:100];
-
+		
 		//[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
 		
 		timeSinceLastBallDrop = timeBetweenBallDrops = 0.3;
-				
+		
 		[self schedule: @selector(tick:)];
 	}
 	return self;
-}
-
-+(CGFloat)scale {
-	return BALL_SCALE;
 }
 
 -(void) draw
@@ -157,7 +154,7 @@ enum {
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
+	
 }
 
 -(void) addNewSpriteWithCoords:(CGPoint)p
@@ -166,12 +163,12 @@ enum {
 	b.position = ccp(p.x, p.y);
 	[self addChild:b];
 	
-		
+	
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-
+	
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
 	bodyDef.userData = b;
 	b2Body *body = world->CreateBody(&bodyDef);
@@ -194,34 +191,41 @@ enum {
 
 -(void) tick: (ccTime) dt
 {
-	
-	timeSinceLastBallDrop += dt;
-	if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
-		timeSinceLastBallDrop -= timeBetweenBallDrops;
-		[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
-
-	}
-	//It is recommended that a fixed time step is used with Box2D for stability
-	//of the simulation, however, we are using a variable time step here.
-	//You need to make an informed choice, the following URL is useful
-	//http://gafferongames.com/game-physics/fix-your-timestep/
-	
-	int32 velocityIterations = 8;
-	int32 positionIterations = 1;
-	
-	// Instruct the world to perform a single step of simulation. It is
-	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);
-	
-	//Iterate over the bodies in the physics world
-	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
-	{
-		if (b->GetUserData() != NULL) {
-			//Synchronize the AtlasSprites position and rotation with the corresponding body
-			Ball *myBall = (Ball*)b->GetUserData();
-			myBall.position = CGPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO);
-			myBall.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
-		}	
+	if( ![[CCDirector sharedDirector] isPaused]) {
+		timeSinceLastBallDrop += dt;
+		if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
+			timeSinceLastBallDrop -= timeBetweenBallDrops;
+			[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
+			
+		}
+		//It is recommended that a fixed time step is used with Box2D for stability
+		//of the simulation, however, we are using a variable time step here.
+		//You need to make an informed choice, the following URL is useful
+		//http://gafferongames.com/game-physics/fix-your-timestep/
+		
+		int32 velocityIterations = 8;
+		int32 positionIterations = 1;
+		
+		// Instruct the world to perform a single step of simulation. It is
+		// generally best to keep the time step and iterations fixed.
+		world->Step(dt, velocityIterations, positionIterations);
+		
+		//Iterate over the bodies in the physics world
+		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+		{
+			if (b->GetUserData() != NULL) {
+				//Synchronize the AtlasSprites position and rotation with the corresponding body
+				Ball *myBall = (Ball*)b->GetUserData();
+				myBall.position = CGPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO);
+				myBall.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
+			}	
+		}
+		
+		if([self children].count > 120)
+		{
+			GameOverLayer *gameOver = [[GameOverLayer alloc] init];
+			[[CCDirector sharedDirector] replaceScene:[CCTransitionShrinkGrow transitionWithDuration:0.5f scene:(CCScene *)gameOver]];
+		}
 	}
 }
 
@@ -234,7 +238,7 @@ enum {
 		CGPoint location = [touch locationInView: [touch view]];
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
-				
+		
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext()) {
 			Ball *userData = (Ball *)b->GetUserData();
 			
@@ -268,31 +272,31 @@ enum {
 	world->DestroyBody(b);
 	[ScoreKeeper sharedScoreKeeper].currentBallCount++;
 }
-				 
+
 -(double)distanceFrom:(CGPoint)a to:(CGPoint)b {
 	return sqrt( (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y) );
 }
 
 /*
-- (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
-{	
-	static float prevX=0, prevY=0;
-	
-	//#define kFilterFactor 0.05f
-#define kFilterFactor 1.0f	// don't use filter. the code is here just as an example
-	
-	float accelX = (float) acceleration.x * kFilterFactor + (1- kFilterFactor)*prevX;
-	float accelY = (float) acceleration.y * kFilterFactor + (1- kFilterFactor)*prevY;
-	
-	prevX = accelX;
-	prevY = accelY;
-	
-	// accelerometer values are in "Portrait" mode. Change them to Landscape left
-	// multiply the gravity by 10
-	b2Vec2 gravity( -accelY * 10, accelX * 10);
-	
-	world->SetGravity( gravity );
-}
+ - (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
+ {	
+ static float prevX=0, prevY=0;
+ 
+ //#define kFilterFactor 0.05f
+ #define kFilterFactor 1.0f	// don't use filter. the code is here just as an example
+ 
+ float accelX = (float) acceleration.x * kFilterFactor + (1- kFilterFactor)*prevX;
+ float accelY = (float) acceleration.y * kFilterFactor + (1- kFilterFactor)*prevY;
+ 
+ prevX = accelX;
+ prevY = accelY;
+ 
+ // accelerometer values are in "Portrait" mode. Change them to Landscape left
+ // multiply the gravity by 10
+ b2Vec2 gravity( -accelY * 10, accelX * 10);
+ 
+ world->SetGravity( gravity );
+ }
  */
 
 // on "dealloc" you need to release all your retained objects
@@ -303,7 +307,7 @@ enum {
 	world = NULL;
 	
 	delete m_debugDraw;
-
+	
 	// don't forget to call "super dealloc"
 	[super dealloc];
 }

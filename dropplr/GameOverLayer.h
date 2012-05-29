@@ -13,4 +13,7 @@
     
 }
 
+// returns a CCScene that contains the GameOverLayer as the only child
++(CCScene *) scene;
+
 @end

@@ -16,7 +16,10 @@
 		B477EF9B157451FC009EA3DF /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = B477EF9A157451FC009EA3DF /* Ball.m */; };
 		B477EF9D15745660009EA3DF /* VeraMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B477EF9C15745660009EA3DF /* VeraMono.ttf */; };
 		B477EFAB15745BB9009EA3DF /* DroidSansMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */; };
-		B4ACA16415745F0100266FFE /* GameOverLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA16315745F0100266FFE /* GameOverLayer.m */; };
+		B4ACA16415745F0100266FFE /* GameOverLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA16315745F0100266FFE /* GameOverLayer.mm */; };
+		B4ACA16A1574684400266FFE /* MainMenuLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA1691574684400266FFE /* MainMenuLayer.mm */; };
+		B4ACA16F1575501300266FFE /* gameover.png in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA16D1575501300266FFE /* gameover.png */; };
+		B4ACA1701575501300266FFE /* gameover-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA16E1575501300266FFE /* gameover-hd.png */; };
 		B4BE4A44156BC14800DB2039 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A43156BC14800DB2039 /* QuartzCore.framework */; };
 		B4BE4A46156BC14800DB2039 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A45156BC14800DB2039 /* OpenGLES.framework */; };
 		B4BE4A48156BC14800DB2039 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A47156BC14800DB2039 /* OpenAL.framework */; };
@@ -183,7 +186,11 @@
 		B477EF9C15745660009EA3DF /* VeraMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = VeraMono.ttf; path = "../../../Downloads/Bitstream-Vera-Sans-Mono/VeraMono.ttf"; sourceTree = "<group>"; };
 		B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSansMono.ttf; sourceTree = "<group>"; };
 		B4ACA16215745F0100266FFE /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
-		B4ACA16315745F0100266FFE /* GameOverLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverLayer.m; sourceTree = "<group>"; };
+		B4ACA16315745F0100266FFE /* GameOverLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameOverLayer.mm; sourceTree = "<group>"; };
+		B4ACA1681574684400266FFE /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
+		B4ACA1691574684400266FFE /* MainMenuLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuLayer.mm; sourceTree = "<group>"; };
+		B4ACA16D1575501300266FFE /* gameover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameover.png; sourceTree = "<group>"; };
+		B4ACA16E1575501300266FFE /* gameover-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gameover-hd.png"; sourceTree = "<group>"; };
 		B4BE4A3F156BC14800DB2039 /* dropplr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropplr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4BE4A43156BC14800DB2039 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B4BE4A45156BC14800DB2039 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -521,7 +528,9 @@
 				B4BE4C1E156BC14B00DB2039 /* DropplrGameplayLayer.h */,
 				B4BE4C1F156BC14B00DB2039 /* DropplrGameplayLayer.mm */,
 				B4ACA16215745F0100266FFE /* GameOverLayer.h */,
-				B4ACA16315745F0100266FFE /* GameOverLayer.m */,
+				B4ACA16315745F0100266FFE /* GameOverLayer.mm */,
+				B4ACA1681574684400266FFE /* MainMenuLayer.h */,
+				B4ACA1691574684400266FFE /* MainMenuLayer.mm */,
 			);
 			name = Layers;
 			sourceTree = "<group>";
@@ -549,6 +558,26 @@
 				B4BE4C1C156BC14B00DB2039 /* RootViewController.m */,
 			);
 			name = "cocos2d files";
+			sourceTree = "<group>";
+		};
+		B4ACA16B15754FEE00266FFE /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */,
+				B477EF9C15745660009EA3DF /* VeraMono.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		B4ACA16C15754FF400266FFE /* Spritesheets */ = {
+			isa = PBXGroup;
+			children = (
+				B4647321156D8D6600ADB673 /* ballSpriteSheet-hd.plist */,
+				B4647322156D8D6600ADB673 /* ballSpriteSheet-hd.png */,
+				B4647329156D90A000ADB673 /* ballSpriteSheet.plist */,
+				B464732A156D90A000ADB673 /* ballSpriteSheet.png */,
+			);
+			name = Spritesheets;
 			sourceTree = "<group>";
 		};
 		B4BE4A34156BC14800DB2039 = {
@@ -600,12 +629,10 @@
 		B4BE4A54156BC14800DB2039 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */,
-				B477EF9C15745660009EA3DF /* VeraMono.ttf */,
-				B4647321156D8D6600ADB673 /* ballSpriteSheet-hd.plist */,
-				B4647322156D8D6600ADB673 /* ballSpriteSheet-hd.png */,
-				B4647329156D90A000ADB673 /* ballSpriteSheet.plist */,
-				B464732A156D90A000ADB673 /* ballSpriteSheet.png */,
+				B4ACA16D1575501300266FFE /* gameover.png */,
+				B4ACA16E1575501300266FFE /* gameover-hd.png */,
+				B4ACA16B15754FEE00266FFE /* Fonts */,
+				B4ACA16C15754FF400266FFE /* Spritesheets */,
 				B4BE4A55156BC14800DB2039 /* Default.png */,
 				B4BE4A57156BC14800DB2039 /* fps_images.png */,
 				B4BE4A59156BC14800DB2039 /* Icon-72.png */,
@@ -1126,6 +1153,8 @@
 				B464732C156D90A000ADB673 /* ballSpriteSheet.png in Resources */,
 				B477EF9D15745660009EA3DF /* VeraMono.ttf in Resources */,
 				B477EFAB15745BB9009EA3DF /* DroidSansMono.ttf in Resources */,
+				B4ACA16F1575501300266FFE /* gameover.png in Resources */,
+				B4ACA1701575501300266FFE /* gameover-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1272,7 +1301,8 @@
 				B4BE4C23156BC14B00DB2039 /* GLES-Render.mm in Sources */,
 				B477EF8F1573F4D1009EA3DF /* ScoreKeeper.m in Sources */,
 				B477EF9B157451FC009EA3DF /* Ball.m in Sources */,
-				B4ACA16415745F0100266FFE /* GameOverLayer.m in Sources */,
+				B4ACA16415745F0100266FFE /* GameOverLayer.mm in Sources */,
+				B4ACA16A1574684400266FFE /* MainMenuLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
