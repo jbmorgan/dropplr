@@ -16,6 +16,7 @@
 		B477EF9B157451FC009EA3DF /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = B477EF9A157451FC009EA3DF /* Ball.m */; };
 		B477EF9D15745660009EA3DF /* VeraMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B477EF9C15745660009EA3DF /* VeraMono.ttf */; };
 		B477EFAB15745BB9009EA3DF /* DroidSansMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */; };
+		B4ACA16415745F0100266FFE /* GameOverLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA16315745F0100266FFE /* GameOverLayer.m */; };
 		B4BE4A44156BC14800DB2039 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A43156BC14800DB2039 /* QuartzCore.framework */; };
 		B4BE4A46156BC14800DB2039 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A45156BC14800DB2039 /* OpenGLES.framework */; };
 		B4BE4A48156BC14800DB2039 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4BE4A47156BC14800DB2039 /* OpenAL.framework */; };
@@ -165,7 +166,7 @@
 		B4BE4C17156BC14B00DB2039 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C16156BC14B00DB2039 /* main.m */; };
 		B4BE4C1A156BC14B00DB2039 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C19156BC14B00DB2039 /* AppDelegate.mm */; };
 		B4BE4C1D156BC14B00DB2039 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C1C156BC14B00DB2039 /* RootViewController.m */; };
-		B4BE4C20156BC14B00DB2039 /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C1F156BC14B00DB2039 /* HelloWorldLayer.mm */; };
+		B4BE4C20156BC14B00DB2039 /* DropplrGameplayLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C1F156BC14B00DB2039 /* DropplrGameplayLayer.mm */; };
 		B4BE4C23156BC14B00DB2039 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BE4C22156BC14B00DB2039 /* GLES-Render.mm */; };
 /* End PBXBuildFile section */
 
@@ -181,6 +182,8 @@
 		B477EF9A157451FC009EA3DF /* Ball.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ball.m; sourceTree = "<group>"; };
 		B477EF9C15745660009EA3DF /* VeraMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = VeraMono.ttf; path = "../../../Downloads/Bitstream-Vera-Sans-Mono/VeraMono.ttf"; sourceTree = "<group>"; };
 		B477EFAA15745BB9009EA3DF /* DroidSansMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSansMono.ttf; sourceTree = "<group>"; };
+		B4ACA16215745F0100266FFE /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
+		B4ACA16315745F0100266FFE /* GameOverLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverLayer.m; sourceTree = "<group>"; };
 		B4BE4A3F156BC14800DB2039 /* dropplr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropplr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4BE4A43156BC14800DB2039 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B4BE4A45156BC14800DB2039 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -486,8 +489,8 @@
 		B4BE4C19156BC14B00DB2039 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		B4BE4C1B156BC14B00DB2039 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		B4BE4C1C156BC14B00DB2039 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		B4BE4C1E156BC14B00DB2039 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		B4BE4C1F156BC14B00DB2039 /* HelloWorldLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HelloWorldLayer.mm; sourceTree = "<group>"; };
+		B4BE4C1E156BC14B00DB2039 /* DropplrGameplayLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DropplrGameplayLayer.h; sourceTree = "<group>"; };
+		B4BE4C1F156BC14B00DB2039 /* DropplrGameplayLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DropplrGameplayLayer.mm; sourceTree = "<group>"; };
 		B4BE4C21156BC14B00DB2039 /* GLES-Render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		B4BE4C22156BC14B00DB2039 /* GLES-Render.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		B4BE4C24156BC14B00DB2039 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
@@ -512,6 +515,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B4ACA16515745F0F00266FFE /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				B4BE4C1E156BC14B00DB2039 /* DropplrGameplayLayer.h */,
+				B4BE4C1F156BC14B00DB2039 /* DropplrGameplayLayer.mm */,
+				B4ACA16215745F0100266FFE /* GameOverLayer.h */,
+				B4ACA16315745F0100266FFE /* GameOverLayer.m */,
+			);
+			name = Layers;
+			sourceTree = "<group>";
+		};
+		B4ACA16615745F1B00266FFE /* Game Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B477EF99157451FC009EA3DF /* Ball.h */,
+				B477EF9A157451FC009EA3DF /* Ball.m */,
+				B477EF8D1573F4D1009EA3DF /* ScoreKeeper.h */,
+				B477EF8E1573F4D1009EA3DF /* ScoreKeeper.m */,
+			);
+			name = "Game Classes";
+			sourceTree = "<group>";
+		};
+		B4ACA16715745F4000266FFE /* cocos2d files */ = {
+			isa = PBXGroup;
+			children = (
+				B4BE4C18156BC14B00DB2039 /* AppDelegate.h */,
+				B4BE4C19156BC14B00DB2039 /* AppDelegate.mm */,
+				B4BE4C24156BC14B00DB2039 /* GameConfig.h */,
+				B4BE4C21156BC14B00DB2039 /* GLES-Render.h */,
+				B4BE4C22156BC14B00DB2039 /* GLES-Render.mm */,
+				B4BE4C1B156BC14B00DB2039 /* RootViewController.h */,
+				B4BE4C1C156BC14B00DB2039 /* RootViewController.m */,
+			);
+			name = "cocos2d files";
+			sourceTree = "<group>";
+		};
 		B4BE4A34156BC14800DB2039 = {
 			isa = PBXGroup;
 			children = (
@@ -548,19 +587,9 @@
 		B4BE4A53156BC14800DB2039 /* dropplr */ = {
 			isa = PBXGroup;
 			children = (
-				B4BE4C18156BC14B00DB2039 /* AppDelegate.h */,
-				B4BE4C19156BC14B00DB2039 /* AppDelegate.mm */,
-				B477EF99157451FC009EA3DF /* Ball.h */,
-				B477EF9A157451FC009EA3DF /* Ball.m */,
-				B4BE4C24156BC14B00DB2039 /* GameConfig.h */,
-				B4BE4C21156BC14B00DB2039 /* GLES-Render.h */,
-				B4BE4C22156BC14B00DB2039 /* GLES-Render.mm */,
-				B4BE4C1E156BC14B00DB2039 /* HelloWorldLayer.h */,
-				B4BE4C1F156BC14B00DB2039 /* HelloWorldLayer.mm */,
-				B4BE4C1B156BC14B00DB2039 /* RootViewController.h */,
-				B4BE4C1C156BC14B00DB2039 /* RootViewController.m */,
-				B477EF8D1573F4D1009EA3DF /* ScoreKeeper.h */,
-				B477EF8E1573F4D1009EA3DF /* ScoreKeeper.m */,
+				B4ACA16715745F4000266FFE /* cocos2d files */,
+				B4ACA16615745F1B00266FFE /* Game Classes */,
+				B4ACA16515745F0F00266FFE /* Layers */,
 				B4BE4A68156BC14800DB2039 /* libs */,
 				B4BE4A54156BC14800DB2039 /* Resources */,
 				B4BE4C14156BC14B00DB2039 /* Supporting Files */,
@@ -1239,10 +1268,11 @@
 				B4BE4C17156BC14B00DB2039 /* main.m in Sources */,
 				B4BE4C1A156BC14B00DB2039 /* AppDelegate.mm in Sources */,
 				B4BE4C1D156BC14B00DB2039 /* RootViewController.m in Sources */,
-				B4BE4C20156BC14B00DB2039 /* HelloWorldLayer.mm in Sources */,
+				B4BE4C20156BC14B00DB2039 /* DropplrGameplayLayer.mm in Sources */,
 				B4BE4C23156BC14B00DB2039 /* GLES-Render.mm in Sources */,
 				B477EF8F1573F4D1009EA3DF /* ScoreKeeper.m in Sources */,
 				B477EF9B157451FC009EA3DF /* Ball.m in Sources */,
+				B4ACA16415745F0100266FFE /* GameOverLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1294,6 +1324,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dropplr/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = dropplr/Resources/Info.plist;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1310,6 +1341,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dropplr/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = dropplr/Resources/Info.plist;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
