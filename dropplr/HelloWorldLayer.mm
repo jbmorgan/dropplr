@@ -9,6 +9,7 @@
 
 // Import the interfaces
 #import "HelloWorldLayer.h"
+#import "ScoreKeeper.h"
 
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
@@ -124,6 +125,8 @@ enum {
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"ballSpriteSheet.plist"];
 		sheet = [CCSpriteBatchNode batchNodeWithFile:@"ballSpriteSheet.png"];
 		[self addChild:sheet];
+		
+		[self addChild:[ScoreKeeper sharedScoreKeeper].scoreLabel z:100];
 
 		//[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
 		
@@ -157,6 +160,7 @@ enum {
 	//CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
 	//CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
 	
+	//NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", @"dg.png", @"lg.png", nil];
 	NSArray *spriteIDs = [[NSArray alloc] initWithObjects:@"c.png", @"y.png", @"m.png", nil];
 	int tag = (arc4random() % spriteIDs.count);
 	NSString *spriteID = [spriteIDs objectAtIndex:tag];
@@ -243,6 +247,8 @@ enum {
 			if(userData && [userData isKindOfClass:[CCSprite class]] &&
 			   [self distanceFrom:userData.position to:location] < 32*BALL_SCALE) {
 				[self popBallsFrom:b];
+				if([ScoreKeeper sharedScoreKeeper].currentBallCount > 0)
+					[[ScoreKeeper sharedScoreKeeper] updateScore];
 				return;
 			}
 		}
@@ -264,6 +270,7 @@ enum {
 	}
 	[self removeChild:spriteToRemove cleanup:YES];
 	world->DestroyBody(b);
+	[ScoreKeeper sharedScoreKeeper].currentBallCount++;
 }
 				 
 -(double)distanceFrom:(CGPoint)a to:(CGPoint)b {
