@@ -35,8 +35,7 @@ enum {
 
 @synthesize timeBetweenBallDrops, timeSinceLastBallDrop, timeLeftBeforeUnpause, state;
 
-+(CCScene *) scene
-{
++(CCScene *) scene {
 	// 'scene' is an autorelease object.
 	CCScene *scene = [CCScene node];
 	
@@ -51,8 +50,7 @@ enum {
 }
 
 // on "init" you need to initialize your instance
--(id) init
-{
+-(id) init {
 	// always call "super" init
 	// Apple recommends to re-assign "self" with the "super" return value
 	if( (self=[super init])) {
@@ -143,8 +141,7 @@ enum {
 	return self;
 }
 
--(void) draw
-{
+-(void) draw {
 	// Default GL states: GL_TEXTURE_2D, GL_VERTEX_ARRAY, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
 	// Needed states:  GL_VERTEX_ARRAY, 
 	// Unneeded states: GL_TEXTURE_2D, GL_COLOR_ARRAY, GL_TEXTURE_COORD_ARRAY
@@ -161,8 +158,7 @@ enum {
 	
 }
 
--(void) addNewSpriteWithCoords:(CGPoint)p
-{
+-(void) addNewSpriteWithCoords:(CGPoint)p {
 	Ball *b = [[Ball alloc] init];
 	b.position = ccp(p.x, p.y);
 	[self addChild:b];
@@ -197,14 +193,11 @@ enum {
 {
 	if( ![[CCDirector sharedDirector] isPaused]) {
 		
-		if(state == kPaused)
-		{
+		if(state == kPaused) {
 			timeLeftBeforeUnpause -= dt;
 			if(timeLeftBeforeUnpause < 0)
 				state = kNormal;
-		}
-		else
-		{
+		} else {
 			timeSinceLastBallDrop += dt;
 			if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
 				timeSinceLastBallDrop -= timeBetweenBallDrops;
@@ -269,6 +262,7 @@ enum {
 	Ball *ballToRemove = (Ball *)b->GetUserData();
 	ballToRemove.visible = NO;
 	
+	//if the user popped a Pause Ball, switch to Paused mode for 5 seconds
 	if(ballToRemove.type == kPause) {
 		timeLeftBeforeUnpause = DEFAULT_PAUSE_TIME;
 		state = kPaused;

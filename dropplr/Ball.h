@@ -13,7 +13,8 @@ typedef enum BallType {
 	kCyan = 0,
 	kYellow,
 	kMagenta,
-	kPause
+	kPause,
+	kFastForward
 } BallType;
 
 @interface Ball : CCNode

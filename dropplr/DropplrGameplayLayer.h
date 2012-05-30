@@ -14,7 +14,8 @@
 
 typedef enum GameState {
 	kNormal,
-	kPaused
+	kPaused,
+	kFastForwarded
 } GameState;
 
 @interface DropplrGameplayLayer : CCLayer
@@ -27,6 +28,7 @@ typedef enum GameState {
 @property double timeBetweenBallDrops;
 @property double timeSinceLastBallDrop;
 @property double timeLeftBeforeUnpause;
+@property double timeLeftBeforeUnFastForward;
 
 @property GameState state;
 // returns a CCScene that contains the DropplrGameplayLayer as the only child
