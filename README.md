@@ -1,6 +1,5 @@
-# dropplr v0.0
-
-A game...?
+# dropplr
+dropplr is a fast-paced game where the player throws ducks at balloons and nothing is as it seems.
 
 ## To Do
 1. Figure out exactly how modifiers should behave.
