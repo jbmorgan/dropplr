@@ -20,6 +20,8 @@
 #define PTM_RATIO 32
 #define BALL_SCALE 0.6
 
+#define DEFAULT_PAUSE_TIME 5.0
+
 // enums that will be used as tags
 enum {
 	kTagTileMap = 1,
@@ -31,7 +33,7 @@ enum {
 // HelloWorldLayer implementation
 @implementation DropplrGameplayLayer
 
-@synthesize timeBetweenBallDrops, timeSinceLastBallDrop;
+@synthesize timeBetweenBallDrops, timeSinceLastBallDrop, timeLeftBeforeUnpause, state;
 
 +(CCScene *) scene
 {
@@ -60,6 +62,8 @@ enum {
 		
 		// enable accelerometer
 		//self.isAccelerometerEnabled = YES;
+		
+		state = kNormal;
 		
 		CGSize screenSize = [CCDirector sharedDirector].winSize;
 		CCLOG(@"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
@@ -192,16 +196,22 @@ enum {
 -(void) tick: (ccTime) dt
 {
 	if( ![[CCDirector sharedDirector] isPaused]) {
-		timeSinceLastBallDrop += dt;
-		if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
-			timeSinceLastBallDrop -= timeBetweenBallDrops;
-			[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
-			
+		
+		if(state == kPaused)
+		{
+			timeLeftBeforeUnpause -= dt;
+			if(timeLeftBeforeUnpause < 0)
+				state = kNormal;
 		}
-		//It is recommended that a fixed time step is used with Box2D for stability
-		//of the simulation, however, we are using a variable time step here.
-		//You need to make an informed choice, the following URL is useful
-		//http://gafferongames.com/game-physics/fix-your-timestep/
+		else
+		{
+			timeSinceLastBallDrop += dt;
+			if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
+				timeSinceLastBallDrop -= timeBetweenBallDrops;
+				[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
+				
+			}
+		}
 		
 		int32 velocityIterations = 8;
 		int32 positionIterations = 1;
@@ -257,8 +267,12 @@ enum {
 -(void)popBallsFrom:(b2Body *)b {
 	
 	Ball *ballToRemove = (Ball *)b->GetUserData();
-	
 	ballToRemove.visible = NO;
+	
+	if(ballToRemove.type == kPause) {
+		timeLeftBeforeUnpause = DEFAULT_PAUSE_TIME;
+		state = kPaused;
+	}
 	
 	for(b2ContactEdge *bce = b->GetContactList(); bce; bce = bce->next) {
 		b2Body *otherBody = bce->other;

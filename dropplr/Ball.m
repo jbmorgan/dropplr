@@ -20,6 +20,10 @@
 		type = (BallType)(arc4random() % spriteIDs.count);
 		NSString *spriteID = [spriteIDs objectAtIndex:(int)type];
 
+		if(CCRANDOM_0_1() < 0.05) {
+			spriteID = @"pause.png";
+			type = kPause;
+		}
 		sprite = [CCSprite spriteWithSpriteFrameName:spriteID];
 		sprite.scale = BALL_SCALE;
 		[self addChild:sprite];

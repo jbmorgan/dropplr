@@ -10,9 +10,10 @@
 #import "cocos2d.h"
 
 typedef enum BallType {
-	Cyan = 0,
-	Yellow,
-	Magenta
+	kCyan = 0,
+	kYellow,
+	kMagenta,
+	kPause
 } BallType;
 
 @interface Ball : CCNode

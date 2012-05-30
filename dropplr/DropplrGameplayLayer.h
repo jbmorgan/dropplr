@@ -12,7 +12,11 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 
-// HelloWorldLayer
+typedef enum GameState {
+	kNormal,
+	kPaused
+} GameState;
+
 @interface DropplrGameplayLayer : CCLayer
 {
 	b2World* world;
@@ -22,7 +26,9 @@
 
 @property double timeBetweenBallDrops;
 @property double timeSinceLastBallDrop;
+@property double timeLeftBeforeUnpause;
 
+@property GameState state;
 // returns a CCScene that contains the DropplrGameplayLayer as the only child
 +(CCScene *) scene;
 
