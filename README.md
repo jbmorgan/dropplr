@@ -1,5 +1,7 @@
 # dropplr
-dropplr is a fast-paced game where the player throws ducks at balloons and nothing is as it seems.
+dropplr is an idea for a game that I had but never had the time to finish.
+
+Balls fall down. Poke the balls. They disappear. You get points!
 
 ## To Do
 1. Figure out exactly how modifiers should behave.
