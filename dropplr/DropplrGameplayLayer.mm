@@ -21,6 +21,8 @@
 #define BALL_SCALE 0.6
 
 #define DEFAULT_PAUSE_TIME 5.0
+#define DEFAULT_FF_TIME 5.0
+#define FF_SPEED 2.5
 
 // enums that will be used as tags
 enum {
@@ -33,7 +35,7 @@ enum {
 // HelloWorldLayer implementation
 @implementation DropplrGameplayLayer
 
-@synthesize timeBetweenBallDrops, timeSinceLastBallDrop, timeLeftBeforeUnpause, state;
+@synthesize timeBetweenBallDrops, timeSinceLastBallDrop, timeLeftInCurrentState, state;
 
 +(CCScene *) scene {
 	// 'scene' is an autorelease object.
@@ -193,17 +195,30 @@ enum {
 {
 	if( ![[CCDirector sharedDirector] isPaused]) {
 		
-		if(state == kPaused) {
-			timeLeftBeforeUnpause -= dt;
-			if(timeLeftBeforeUnpause < 0)
-				state = kNormal;
-		} else {
-			timeSinceLastBallDrop += dt;
-			if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
-				timeSinceLastBallDrop -= timeBetweenBallDrops;
-				[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
-				
-			}
+		if(state != kNormal) {
+			timeLeftInCurrentState -= dt;
+			if(timeLeftInCurrentState < 0)
+				state = kNormal;			
+		}
+		
+		switch (state) {
+			case kNormal:
+				timeSinceLastBallDrop += dt;
+				break;
+			case kPaused:
+				//do nothing
+				break;
+			case kFastForwarded:
+				timeSinceLastBallDrop += FF_SPEED * dt;
+				break;
+			default:
+				break;
+		}
+		
+		if(timeSinceLastBallDrop >= timeBetweenBallDrops) {
+			timeSinceLastBallDrop -= timeBetweenBallDrops;
+			[self addNewSpriteWithCoords:ccp(CCRANDOM_0_1() * [CCDirector sharedDirector].winSize.width, 500)];
+			
 		}
 		
 		int32 velocityIterations = 8;
@@ -236,7 +251,7 @@ enum {
 //finds the ball touched by the user and "pops" all same-colored balls touching it (and so on)
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	//At the touch's locatio
+	//At the touch's location
 	for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
 		
@@ -262,10 +277,18 @@ enum {
 	Ball *ballToRemove = (Ball *)b->GetUserData();
 	ballToRemove.visible = NO;
 	
-	//if the user popped a Pause Ball, switch to Paused mode for 5 seconds
-	if(ballToRemove.type == kPause) {
-		timeLeftBeforeUnpause = DEFAULT_PAUSE_TIME;
-		state = kPaused;
+	switch (ballToRemove.type) {
+		//if the user popped a Pause Ball, switch to Paused mode for 5 seconds	
+		case kPause:
+			timeLeftInCurrentState = DEFAULT_PAUSE_TIME;
+			state = kPaused;
+			break;
+		case kFastForward:
+			timeLeftInCurrentState = DEFAULT_FF_TIME;
+			state = kFastForwarded;
+			break;			
+		default:
+			break;
 	}
 	
 	for(b2ContactEdge *bce = b->GetContactList(); bce; bce = bce->next) {
